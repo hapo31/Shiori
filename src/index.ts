@@ -1,6 +1,8 @@
-import { BrowserWindow, app, App } from "electron";
+import { BrowserWindow, app, App, ipcMain } from "electron";
+import { FileEvent } from "./events/File";
+import ReadFiles from "./File/ReadFiles";
 
-class SampleApp {
+class MyApp {
   private mainWindow: BrowserWindow | null = null;
   private app: App;
   private mainURL: string = `file://${__dirname}/index.html`;
@@ -28,10 +30,20 @@ class SampleApp {
 
     this.mainWindow.loadURL(this.mainURL);
 
+    this.mainWindow.webContents.openDevTools();
+
+    ipcMain.on(FileEvent.folderChange, this.onFolderChange);
+
     this.mainWindow.on("closed", () => {
       this.mainWindow = null;
     });
   }
+
+  private onFolderChange = async (event: any, dirPath: string) => {
+    console.log(dirPath);
+    const paths = await ReadFiles(dirPath);
+    event.sender.send(FileEvent.folderChanged, dirPath, paths);
+  };
 
   private onReady() {
     this.create();
@@ -44,4 +56,4 @@ class SampleApp {
   }
 }
 
-const MyApp: SampleApp = new SampleApp(app);
+const myApp: MyApp = new MyApp(app);
