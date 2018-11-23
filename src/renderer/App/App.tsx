@@ -25,7 +25,6 @@ export default class App extends React.Component<Props, State> {
   render() {
     return (
       <div onKeyPress={this.onKeyPress}>
-        <div>Hello, world!!!!</div>
         <ImageView
           imgUrl={this.state.files[this.state.index]}
           onchange={this.onChange}
