@@ -32,7 +32,7 @@ export default class ImageView extends React.Component<Props> {
     return (
       <>
         <button onClick={this.onclick}>Select File</button>
-        <img src={this.props.imgUrl} alt="" />;
+        <img src={this.props.imgUrl} alt="" />
       </>
     );
   }
