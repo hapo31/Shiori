@@ -23,18 +23,18 @@ export default function AppReducer(
     case ActionType.INDEX_INCREMENT: {
       // index + 1 が length 以上ならインクリメントしない
       const nextIndex =
-        state.index + 1 >= state.files.length ? state.index : state.index + 1;
+        state.index + 1 > state.files.length ? state.index : state.index + 1;
       return {
-        index: nextIndex,
-        ...state
+        ...state,
+        index: nextIndex
       };
     }
     case ActionType.INDEX_DECREMENT: {
       // index - 1 が 0未満ならデクリメントしない
       const nextIndex = state.index - 1 < 0 ? 0 : state.index - 1;
       return {
-        index: nextIndex,
-        ...state
+        ...state,
+        index: nextIndex
       };
     }
     default:

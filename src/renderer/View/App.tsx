@@ -1,13 +1,10 @@
 import React from "react";
 import ImageView from "./ImageView/ImageView";
 
-import { ipcRenderer } from "electron";
-import { FileEvent } from "../../events/File";
-
 import { connect } from "react-redux";
 import AppState from "../State/AppState";
 import { bindActionCreators } from "redux";
-import { fileActions } from "../Actions/File/File";
+import Actions from "../Actions/Actions";
 
 type Props = {
   index: number;
@@ -16,17 +13,16 @@ type Props = {
 
 type StateProps = Props;
 
-type ChildProps = StateProps & typeof fileActions;
+type ChildProps = StateProps & typeof Actions;
 class App extends React.Component<ChildProps> {
   constructor(props: ChildProps) {
     super(props);
-    ipcRenderer.on(FileEvent.folderChange, (_: unknown, paths: string[]) => {});
   }
 
   render() {
     const { folderChange } = this.props;
     return (
-      <div onKeyPress={this.onKeyPress}>
+      <div onKeyDown={this.onKeyDown}>
         <ImageView
           imgUrl={this.props.files[this.props.index]}
           onchange={folderChange}
@@ -35,25 +31,24 @@ class App extends React.Component<ChildProps> {
     );
   }
 
-  private onKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    const index = this.props.index;
+  private onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    event.preventDefault();
     switch (event.key) {
       case "ArrowRight":
-        // TODO: reduxのactionに置き換え
-        this.setState({
-          index: (index + 1) % this.props.files.length
-        });
+        this.props.indexIncrement();
+        break;
+      case "ArrowLeft":
+        this.props.indexDecrement();
+        break;
     }
   };
 }
 
-const connecter = connect(
+const AppContainer = connect(
   (state: AppState): StateProps => ({
     ...state
   }),
-  dispatch => bindActionCreators(fileActions, dispatch)
-);
-
-const AppContainer = connecter(App);
+  dispatch => bindActionCreators(Actions, dispatch)
+)(App);
 
 export default AppContainer;
