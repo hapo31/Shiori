@@ -17,7 +17,7 @@ type Props = {
 type StateProps = Props;
 
 type ChildProps = StateProps & typeof fileActions;
-export default class App extends React.Component<ChildProps> {
+class App extends React.Component<ChildProps> {
   constructor(props: ChildProps) {
     super(props);
     ipcRenderer.on(FileEvent.folderChange, (_: unknown, paths: string[]) => {});
@@ -54,4 +54,6 @@ const connecter = connect(
   dispatch => bindActionCreators(fileActions, dispatch)
 );
 
-export const AppConnecter = connecter(App);
+const AppContainer = connecter(App);
+
+export default AppContainer;

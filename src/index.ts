@@ -21,9 +21,9 @@ class MyApp {
   private create() {
     this.mainWindow = new BrowserWindow({
       width: 800,
-      height: 400,
-      minWidth: 500,
-      minHeight: 200,
+      height: 800,
+      minWidth: 800,
+      minHeight: 800,
       acceptFirstMouse: true,
       titleBarStyle: "hidden"
     });

@@ -37,5 +37,7 @@ export default function AppReducer(
         ...state
       };
     }
+    default:
+      return state;
   }
 }
