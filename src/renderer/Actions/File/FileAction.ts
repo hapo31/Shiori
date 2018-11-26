@@ -2,14 +2,15 @@ import { createAppAction } from "../ActionType";
 import { OpenDialogOptions } from "electron";
 
 export enum ActionType {
-  FOLDERCHANGE = "FOLDERCHANGE",
+  CHANGEFILES = "CHANGEFILES",
   OPENDIALOG = "OPENDIALOG",
-  INDEX_INCREMENT = "INDEX_INCREMENT",
-  INDEX_DECREMENT = "INDEX_DECREMENT"
+  REQUEST_FILE_ENUMRATE = "REQUEST_FILE_ENUMRATE",
+  INCREMENT_INDEX = "INCREMENT_INDEX",
+  DECREMENT_INDEX = "DECREMENT_INDEX"
 }
 
-const folderChange = createAppAction(
-  ActionType.FOLDERCHANGE,
+const changeFiles = createAppAction(
+  ActionType.CHANGEFILES,
   (files: string[]) => ({
     files
   })
@@ -17,26 +18,34 @@ const folderChange = createAppAction(
 
 const openDialog = createAppAction(
   ActionType.OPENDIALOG,
-  (option: OpenDialogOptions, callback: (filePaths: string) => void) => ({
-    ...option,
-    callback
+  (option: OpenDialogOptions) => ({
+    option
   })
 );
 
-const indexIncrement = createAppAction(ActionType.INDEX_INCREMENT);
+const requestFileEnumerate = createAppAction(
+  ActionType.REQUEST_FILE_ENUMRATE,
+  (dirPath: string) => ({
+    dirPath
+  })
+);
 
-const indexDecrement = createAppAction(ActionType.INDEX_DECREMENT);
+const incrementIndex = createAppAction(ActionType.INCREMENT_INDEX);
+
+const decrementIndex = createAppAction(ActionType.DECREMENT_INDEX);
 
 export type FileAction = ReturnType<
-  | typeof folderChange
+  | typeof changeFiles
   | typeof openDialog
-  | typeof indexIncrement
-  | typeof indexDecrement
+  | typeof requestFileEnumerate
+  | typeof incrementIndex
+  | typeof decrementIndex
 >;
 
 export const fileActions = {
-  folderChange,
+  changeFiles,
   openDialog,
-  indexIncrement,
-  indexDecrement
+  requestFileEnumerate,
+  incrementIndex,
+  decrementIndex
 };
