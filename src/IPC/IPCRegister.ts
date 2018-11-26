@@ -36,7 +36,7 @@ export function OpenDialog(window: BrowserWindow) {
     FileEvent.openDialogRequest,
     (event: any, options: OpenDialogOptions) => {
       dialog.showOpenDialog(window, options, filePaths => {
-        if (filePaths.length > 0) {
+        if (filePaths && filePaths.length > 0) {
           event.sender.send(FileEvent.openDialogResponse, filePaths[0]);
         }
       });

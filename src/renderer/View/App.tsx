@@ -1,11 +1,11 @@
-import React from "react";
-import ImageView from "./ImageView/ImageView";
-
-import { connect } from "react-redux";
-import AppState from "../State/AppState";
-import { bindActionCreators } from "redux";
-import Actions from "../Actions/Actions";
 import { ipcRenderer } from "electron";
+import React from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+
+import ImageView from "./ImageView/ImageView";
+import AppState from "../State/AppState";
+import Actions from "../Actions/Actions";
 import { FileEvent } from "../../events/File";
 
 type ChildProps = AppState & typeof Actions;

@@ -1,6 +1,6 @@
 import AppState from "../State/AppState";
 import { ActionType, FileAction } from "../Actions/File/FileAction";
-import { ipcRenderer, OpenDialogOptions } from "electron";
+import { ipcRenderer } from "electron";
 import { FileEvent } from "../../events/File";
 
 type Actions = FileAction;
