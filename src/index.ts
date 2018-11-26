@@ -1,4 +1,5 @@
 import { BrowserWindow, app, App, ipcMain } from "electron";
+import * as IPCRegister from "./IPC/IPCRegister";
 import { FileEvent } from "./events/File";
 import ReadFiles from "./File/ReadFiles";
 
@@ -32,18 +33,13 @@ class MyApp {
 
     this.mainWindow.webContents.openDevTools();
 
-    ipcMain.on(FileEvent.folderChange, this.onFolderChange);
+    IPCRegister.FileEnumerate(this.mainWindow);
+    IPCRegister.OpenDialog(this.mainWindow);
 
     this.mainWindow.on("closed", () => {
       this.mainWindow = null;
     });
   }
-
-  private onFolderChange = async (event: any, dirPath: string) => {
-    console.log(dirPath);
-    const paths = await ReadFiles(dirPath);
-    event.sender.send(FileEvent.folderChanged, dirPath, paths);
-  };
 
   private onReady() {
     this.create();

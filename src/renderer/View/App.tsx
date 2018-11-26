@@ -5,49 +5,55 @@ import { connect } from "react-redux";
 import AppState from "../State/AppState";
 import { bindActionCreators } from "redux";
 import Actions from "../Actions/Actions";
+import { ipcRenderer } from "electron";
+import { FileEvent } from "../../events/File";
 
-type Props = {
-  index: number;
-  files: string[];
-};
-
-type StateProps = Props;
-
-type ChildProps = StateProps & typeof Actions;
+type ChildProps = AppState & typeof Actions;
 class App extends React.Component<ChildProps> {
   constructor(props: ChildProps) {
     super(props);
+
+    ipcRenderer.on(FileEvent.openDialogResponse, (_: any, dirPath: string) => {
+      props.requestFileEnumerate(dirPath);
+    });
+    ipcRenderer.on(FileEvent.fileChangeResponse, (_: any, paths: string[]) => {
+      props.changeFiles(paths);
+    });
   }
 
   render() {
-    const { folderChange } = this.props;
     return (
       <div onKeyDown={this.onKeyDown}>
-        <ImageView
-          imgUrl={this.props.files[this.props.index]}
-          onchange={folderChange}
-        />
+        <button onClick={this.onOpenDialog}>Select File</button>
+        <ImageView imgUrl={this.props.files[this.props.index]} />
       </div>
     );
   }
 
   private onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    debugger;
     event.preventDefault();
     switch (event.key) {
       case "ArrowRight":
-        this.props.indexIncrement();
+        this.props.incrementIndex();
         break;
       case "ArrowLeft":
-        this.props.indexDecrement();
+        this.props.decrementIndex();
         break;
     }
+  };
+
+  private onOpenDialog = () => {
+    this.props.openDialog({
+      properties: ["openDirectory"],
+      title: "画像フォルダを選択",
+      defaultPath: "."
+    });
   };
 }
 
 const AppContainer = connect(
-  (state: AppState): StateProps => ({
-    ...state
-  }),
+  (state: AppState): AppState => state,
   dispatch => bindActionCreators(Actions, dispatch)
 )(App);
 

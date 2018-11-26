@@ -1,5 +1,6 @@
 export enum FileEvent {
-  folderChange = "folderChange",
-  folderChanged = "folderChanged",
-  fileChanged = "fileChanged"
+  openDialogRequest = "openDialogRequest",
+  openDialogResponse = "openDialogResponse",
+  fileChangeRequest = "fileChangeRequest",
+  fileChangeResponse = "fileChangeResponse"
 }
