@@ -23,15 +23,21 @@ class App extends React.Component<ChildProps> {
 
   render() {
     return (
-      <div onKeyDown={this.onKeyDown}>
+      <div ref={this.ref} onKeyDown={this.onKeyDown}>
         <button onClick={this.onOpenDialog}>Select File</button>
         <ImageView imgUrl={this.props.files[this.props.index]} />
       </div>
     );
   }
 
+  private ref = (element: HTMLElement | null) => {
+    if (element) {
+      // focus() しないとキー操作が働かない
+      element.focus();
+    }
+  };
+
   private onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    debugger;
     event.preventDefault();
     switch (event.key) {
       case "ArrowRight":
