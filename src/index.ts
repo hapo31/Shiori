@@ -1,7 +1,5 @@
-import { BrowserWindow, app, App, ipcMain } from "electron";
+import { BrowserWindow, app, App } from "electron";
 import * as IPCRegister from "./IPC/IPCRegister";
-import { FileEvent } from "./events/File";
-import ReadFiles from "./File/ReadFiles";
 
 class MyApp {
   private mainWindow: BrowserWindow | null = null;
@@ -23,8 +21,9 @@ class MyApp {
     this.mainWindow = new BrowserWindow({
       width: 800,
       height: 800,
-      minWidth: 800,
-      minHeight: 800,
+      // TODO: 最低ウインドウサイズは考えもの
+      minWidth: 100,
+      minHeight: 100,
       acceptFirstMouse: true,
       titleBarStyle: "hidden"
     });
@@ -33,8 +32,9 @@ class MyApp {
 
     this.mainWindow.webContents.openDevTools();
 
-    IPCRegister.FileEnumerate(this.mainWindow);
+    IPCRegister.EnumerateImageFile(this.mainWindow);
     IPCRegister.OpenDialog(this.mainWindow);
+    IPCRegister.ChangeWindowSize(this.mainWindow);
 
     this.mainWindow.on("closed", () => {
       this.mainWindow = null;

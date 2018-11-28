@@ -2,12 +2,13 @@ import { ipcMain, BrowserWindow, dialog, OpenDialogOptions } from "electron";
 import path from "path";
 import { FileEvent } from "../events/File";
 import ReadFiles from "../File/ReadFiles";
+import { WindowEvent } from "../events/Window";
 
 /**
  * 渡されたディレクトリのパスに含まれている画像ファイルを列挙する
  * @param window
  */
-export function FileEnumerate(window: BrowserWindow) {
+export function EnumerateImageFile(window: BrowserWindow) {
   ipcMain.on(
     FileEvent.fileChangeRequest,
     async (event: any, dirpath: string) => {
@@ -40,6 +41,21 @@ export function OpenDialog(window: BrowserWindow) {
           event.sender.send(FileEvent.openDialogResponse, filePaths[0]);
         }
       });
+    }
+  );
+}
+
+/**
+ * window サイズを変更する
+ * @param window
+ */
+export function ChangeWindowSize(window: BrowserWindow) {
+  ipcMain.on(
+    WindowEvent.changeWindowSizeRequest,
+    (event: any, width: number, height: number) => {
+      console.log({ width, height });
+      const bounds = window.getBounds();
+      window.setBounds({ width, height, x: bounds.x, y: bounds.y });
     }
   );
 }

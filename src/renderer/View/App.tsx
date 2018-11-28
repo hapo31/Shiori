@@ -42,9 +42,11 @@ class App extends React.Component<ChildProps> {
     switch (event.key) {
       case "ArrowRight":
         this.props.incrementIndex();
+        this.props.windowSizeChange(100 + this.props.index * 10, 1000);
         break;
       case "ArrowLeft":
         this.props.decrementIndex();
+        this.props.windowSizeChange(100 + this.props.index * 10, 1000);
         break;
     }
   };
