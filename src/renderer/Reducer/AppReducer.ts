@@ -66,6 +66,11 @@ export default function AppReducer(
       return state;
     }
 
+    case WindowActionType.APPLICATION_CLOSE: {
+      ipcRenderer.send(WindowEvent.closeApplication);
+      return state;
+    }
+
     default:
       return state;
   }

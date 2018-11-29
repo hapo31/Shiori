@@ -19,6 +19,7 @@ class MyApp {
 
   private create() {
     this.mainWindow = new BrowserWindow({
+      frame: false,
       width: 800,
       height: 800,
       // TODO: 最低ウインドウサイズは考えもの
@@ -35,6 +36,7 @@ class MyApp {
     IPCRegister.EnumerateImageFile(this.mainWindow);
     IPCRegister.OpenDialog(this.mainWindow);
     IPCRegister.ChangeWindowSize(this.mainWindow);
+    IPCRegister.CloseApplicationWindow(this.mainWindow);
 
     this.mainWindow.on("closed", () => {
       this.mainWindow = null;

@@ -53,9 +53,18 @@ export function ChangeWindowSize(window: BrowserWindow) {
   ipcMain.on(
     WindowEvent.changeWindowSizeRequest,
     (event: any, width: number, height: number) => {
-      console.log({ width, height });
       const bounds = window.getBounds();
       window.setBounds({ width, height, x: bounds.x, y: bounds.y });
     }
   );
+}
+
+/**
+ * アプリケーションを閉じる
+ * @param window
+ */
+export function CloseApplicationWindow(window: BrowserWindow) {
+  ipcMain.on(WindowEvent.closeApplication, (event: any) => {
+    window.close();
+  });
 }

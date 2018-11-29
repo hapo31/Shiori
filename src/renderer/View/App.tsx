@@ -7,6 +7,7 @@ import ImageView from "./ImageView/ImageView";
 import AppState from "../State/AppState";
 import Actions from "../Actions/Actions";
 import { FileEvent } from "../../events/File";
+import Header from "./Header/Header";
 
 type ChildProps = AppState & typeof Actions;
 class App extends React.Component<ChildProps> {
@@ -24,8 +25,12 @@ class App extends React.Component<ChildProps> {
   render() {
     return (
       <div ref={this.ref} onKeyDown={this.onKeyDown}>
+        <Header onClickClose={this.onClickCloseApp} />
         <button onClick={this.onOpenDialog}>Select File</button>
-        <ImageView imgUrl={this.props.files[this.props.index]} />
+        <ImageView
+          onChangeImage={this.onChangeImage}
+          imgUrl={this.props.files[this.props.index]}
+        />
       </div>
     );
   }
@@ -42,11 +47,9 @@ class App extends React.Component<ChildProps> {
     switch (event.key) {
       case "ArrowRight":
         this.props.incrementIndex();
-        this.props.windowSizeChange(100 + this.props.index * 10, 1000);
         break;
       case "ArrowLeft":
         this.props.decrementIndex();
-        this.props.windowSizeChange(100 + this.props.index * 10, 1000);
         break;
     }
   };
@@ -57,6 +60,14 @@ class App extends React.Component<ChildProps> {
       title: "画像フォルダを選択",
       defaultPath: "."
     });
+  };
+
+  private onChangeImage = (width: number, height: number) => {
+    this.props.windowSizeChange(width, height);
+  };
+
+  private onClickCloseApp = () => {
+    this.props.applicationClose();
   };
 }
 
