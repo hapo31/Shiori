@@ -25,18 +25,21 @@ class App extends React.Component<ChildProps> {
   }
 
   render() {
+    const { imageView } = this.props;
+
     return (
       <div>
         <Header
-          title={this.props.files[this.props.index]}
+          title={imageView.files[imageView.index]}
           onClickClose={this.onClickCloseApp}
         />
+        {/* TODO: ファイル選択なんか別の手段考える */}
         <button onClick={this.onOpenDialog}>Select File</button>
         <ImageView
           maxWidth={window.screen.width}
           maxHeight={window.screen.height}
           onChangeImage={this.onChangeImage}
-          imgUrl={this.props.files[this.props.index]}
+          imgUrl={imageView.files[imageView.index]}
         />
       </div>
     );

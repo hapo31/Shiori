@@ -1,7 +1,7 @@
 import { createAppAction } from "../ActionType";
 import { OpenDialogOptions } from "electron";
 
-export enum FileActionType {
+export enum ImageViewActionType {
   CHANGEFILES = "CHANGEFILES",
   OPENDIALOG = "OPENDIALOG",
   REQUEST_FILE_ENUMRATE = "REQUEST_FILE_ENUMRATE",
@@ -10,31 +10,31 @@ export enum FileActionType {
 }
 
 const changeFiles = createAppAction(
-  FileActionType.CHANGEFILES,
+  ImageViewActionType.CHANGEFILES,
   (files: string[]) => ({
     files
   })
 );
 
 const openDialog = createAppAction(
-  FileActionType.OPENDIALOG,
+  ImageViewActionType.OPENDIALOG,
   (option: OpenDialogOptions) => ({
     option
   })
 );
 
 const requestFileEnumerate = createAppAction(
-  FileActionType.REQUEST_FILE_ENUMRATE,
+  ImageViewActionType.REQUEST_FILE_ENUMRATE,
   (dirPath: string) => ({
     dirPath
   })
 );
 
-const incrementIndex = createAppAction(FileActionType.INCREMENT_INDEX);
+const incrementIndex = createAppAction(ImageViewActionType.INCREMENT_INDEX);
 
-const decrementIndex = createAppAction(FileActionType.DECREMENT_INDEX);
+const decrementIndex = createAppAction(ImageViewActionType.DECREMENT_INDEX);
 
-export type FileAction = ReturnType<
+export type ImageViewAction = ReturnType<
   | typeof changeFiles
   | typeof openDialog
   | typeof requestFileEnumerate
@@ -42,7 +42,7 @@ export type FileAction = ReturnType<
   | typeof decrementIndex
 >;
 
-export const fileActions = {
+export const imageViewActions = {
   changeFiles,
   openDialog,
   requestFileEnumerate,
