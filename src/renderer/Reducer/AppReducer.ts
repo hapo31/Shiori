@@ -2,12 +2,14 @@ import AppState from "../State/AppState";
 import { combineReducers } from "redux";
 import ImageViewReducer from "./ImageView/ImageViewReducer";
 import WindowReducer from "./Window/WindowReducer";
+import FileReducer from "./FIle/FileReducer";
 
 let rootReducer = combineReducers({
   imageView: ImageViewReducer,
-  window: WindowReducer
+  window: WindowReducer,
+  file: FileReducer
 });
 
-type x = keyof AppState;
-
 export default rootReducer;
+
+console.log("InitialState:", rootReducer({} as any, { type: null }));

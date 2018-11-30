@@ -45,13 +45,6 @@ class App extends React.Component<ChildProps> {
     );
   }
 
-  private ref = (element: HTMLElement | null) => {
-    if (element) {
-      // focus() しないとキー操作が働かない
-      element.focus();
-    }
-  };
-
   private onKeyDown = (event: KeyboardEvent) => {
     event.preventDefault();
     switch (event.key) {
