@@ -20,14 +20,21 @@ class App extends React.Component<ChildProps> {
     ipcRenderer.on(FileEvent.fileChangeResponse, (_: any, paths: string[]) => {
       props.changeFiles(paths);
     });
+
+    window.onkeydown = this.onKeyDown;
   }
 
   render() {
     return (
-      <div ref={this.ref} onKeyDown={this.onKeyDown}>
-        <Header onClickClose={this.onClickCloseApp} />
+      <div>
+        <Header
+          title={this.props.files[this.props.index]}
+          onClickClose={this.onClickCloseApp}
+        />
         <button onClick={this.onOpenDialog}>Select File</button>
         <ImageView
+          maxWidth={window.screen.width}
+          maxHeight={window.screen.height}
           onChangeImage={this.onChangeImage}
           imgUrl={this.props.files[this.props.index]}
         />
@@ -42,7 +49,7 @@ class App extends React.Component<ChildProps> {
     }
   };
 
-  private onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  private onKeyDown = (event: KeyboardEvent) => {
     event.preventDefault();
     switch (event.key) {
       case "ArrowRight":
@@ -63,7 +70,7 @@ class App extends React.Component<ChildProps> {
   };
 
   private onChangeImage = (width: number, height: number) => {
-    this.props.windowSizeChange(width, height);
+    this.props.windowSizeChange(width, height + 50);
   };
 
   private onClickCloseApp = () => {

@@ -1,4 +1,4 @@
-import { BrowserWindow, app, App } from "electron";
+import { BrowserWindow, app, App, Menu } from "electron";
 import * as IPCRegister from "./IPC/IPCRegister";
 
 class MyApp {
@@ -19,19 +19,25 @@ class MyApp {
 
   private create() {
     this.mainWindow = new BrowserWindow({
-      frame: false,
+      title: "Shiori",
+      x: 0,
+      y: 0,
       width: 800,
       height: 800,
       // TODO: 最低ウインドウサイズは考えもの
       minWidth: 100,
       minHeight: 100,
       acceptFirstMouse: true,
-      titleBarStyle: "hidden"
+      frame: false
+      // titleBarStyle: "hiddenInset"
     });
 
     this.mainWindow.loadURL(this.mainURL);
 
     this.mainWindow.webContents.openDevTools();
+
+    const menu = Menu.buildFromTemplate([]);
+    Menu.setApplicationMenu(menu);
 
     IPCRegister.EnumerateImageFile(this.mainWindow);
     IPCRegister.OpenDialog(this.mainWindow);
