@@ -9,19 +9,41 @@ import Actions from "../Actions/Actions";
 import { FileEvent } from "../../events/File";
 import Header from "./Header/Header";
 
+type State = {
+  windowHeight: number;
+  windowWidth: number;
+};
+
 type ChildProps = AppState & typeof Actions;
-class App extends React.Component<ChildProps> {
+class App extends React.Component<ChildProps, State> {
+  state = {
+    windowHeight: 0,
+    windowWidth: 0
+  };
+
   constructor(props: ChildProps) {
     super(props);
 
     ipcRenderer.on(FileEvent.openDialogResponse, (_: any, dirPath: string) => {
       props.requestFileEnumerate(dirPath);
     });
-    ipcRenderer.on(FileEvent.fileChangeResponse, (_: any, paths: string[]) => {
-      props.changeFiles(paths);
-    });
+    ipcRenderer.on(
+      FileEvent.fileEnumrateResponse,
+      (_: any, paths: string[]) => {
+        props.changeFiles(
+          paths.filter(
+            file =>
+              file.endsWith(".jpg") ||
+              file.endsWith(".jpeg") ||
+              file.endsWith(".png") ||
+              file.endsWith(".gif")
+          )
+        );
+      }
+    );
 
     window.onkeydown = this.onKeyDown;
+    window.onresize = this.onWindowResize;
   }
 
   render() {
@@ -33,13 +55,14 @@ class App extends React.Component<ChildProps> {
           title={imageView.files[imageView.index]}
           onClickClose={this.onClickCloseApp}
         />
-        {/* TODO: ファイル選択なんか別の手段考える */}
-        <button onClick={this.onOpenDialog}>Select File</button>
         <ImageView
-          maxWidth={window.screen.width}
-          maxHeight={window.screen.height}
-          onChangeImage={this.onChangeImage}
+          maxWidth={window.innerWidth}
+          maxHeight={window.innerHeight}
           imgUrl={imageView.files[imageView.index]}
+          isLast={imageView.index === imageView.files.length}
+          onChangeImage={this.onChangeImage}
+          onDropImage={this.onDropImage}
+          onClick={this.onOpenDialog}
         />
       </div>
     );
@@ -66,7 +89,24 @@ class App extends React.Component<ChildProps> {
   };
 
   private onChangeImage = (width: number, height: number) => {
-    this.props.windowSizeChange(width, height + 50);
+    this.props.windowSizeChange(width, height + 51);
+  };
+
+  private onDropImage = (file: File, isDirectory: boolean) => {
+    const dirName = isDirectory
+      ? file.path
+      : file.path
+          .split(/[/\\]/)
+          .slice(0, -1)
+          .join("/");
+    this.props.requestFileEnumerate(dirName);
+  };
+
+  private onWindowResize = (_: UIEvent) => {
+    this.setState({
+      windowWidth: window.innerWidth,
+      windowHeight: window.innerHeight
+    });
   };
 
   private onClickCloseApp = () => {

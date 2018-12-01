@@ -12,7 +12,7 @@ export default function FileReducer(state = initialState, action: FileAction) {
     }
 
     case FileActionType.REQUEST_FILE_ENUMRATE: {
-      ipcRenderer.send(FileEvent.fileChangeRequest, action.dirPath);
+      ipcRenderer.send(FileEvent.fileEnumrateRequest, action.dirPath);
       return state;
     }
 

@@ -10,19 +10,12 @@ import { WindowEvent } from "../events/Window";
  */
 export function EnumerateImageFile(window: BrowserWindow) {
   ipcMain.on(
-    FileEvent.fileChangeRequest,
+    FileEvent.fileEnumrateRequest,
     async (event: any, dirpath: string) => {
       const fileNames = await ReadFiles(dirpath);
       event.sender.send(
-        FileEvent.fileChangeResponse,
-        fileNames
-          .filter(
-            file =>
-              file.endsWith(".jpg") ||
-              file.endsWith(".jpeg") ||
-              file.endsWith(".png")
-          )
-          .map(fileName => path.join(dirpath, fileName))
+        FileEvent.fileEnumrateResponse,
+        fileNames.map(fileName => path.join(dirpath, fileName))
       );
     }
   );
