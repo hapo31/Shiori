@@ -22,8 +22,8 @@ class MyApp {
       title: "Shiori",
       x: 0,
       y: 0,
-      width: 200,
-      height: 200,
+      width: 400,
+      height: 400,
       // TODO: 最低ウインドウサイズは考えもの
       minWidth: 100,
       minHeight: 100,
