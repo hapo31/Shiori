@@ -89,7 +89,10 @@ class App extends React.Component<ChildProps, State> {
   };
 
   private onChangeImage = (width: number, height: number) => {
-    this.props.windowSizeChange(width, height + 51);
+    const w = window.screen.width > width ? width : window.screen.width;
+    const h = window.screen.height > height ? height : window.screen.height;
+
+    this.props.windowSizeChange(w, h);
   };
 
   private onDropImage = (file: File, isDirectory: boolean) => {
