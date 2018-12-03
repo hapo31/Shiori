@@ -21,11 +21,14 @@ const BorderContainer = styled.div`
   -webkit-user-drag: none;
   text-align: center;
   font-size: 10px;
-  border: solid #efefef;
+  height: 100%;
+  width: 100%;
+  border: solid #ddd;
   border-radius: 20px;
+  vertical-align: middle;
 
-  &:-moz-drag-over {
-    background-color: #eee;
+  &:hover {
+    background-color: #ccc;
   }
 `;
 
@@ -50,7 +53,11 @@ export default class ImageView extends React.Component<Props, State> {
       <div
         style={{
           width: "100%",
-          height: "100%"
+          height: "100%",
+          display: "flex",
+          position: "fixed",
+          left: 0,
+          top: 0
         }}
         onClick={this.onClick}
         onDragOver={this.onDragOver}
@@ -89,6 +96,7 @@ export default class ImageView extends React.Component<Props, State> {
     event.preventDefault();
 
     if (event.dataTransfer.items.length > 0) {
+      // ドラッグアンドドロップした画像の1つ目を取得する
       const file = event.dataTransfer.items[0].getAsFile();
       if (file != null && (file.type === "image/png" || file.type === "")) {
         this.props.onDropImage(file, file.type === "");

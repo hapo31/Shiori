@@ -50,21 +50,24 @@ class App extends React.Component<ChildProps, State> {
     const { imageView } = this.props;
 
     return (
-      <div>
-        <Header
+      <>
+        {/* <Header
           title={imageView.files[imageView.index]}
           onClickClose={this.onClickCloseApp}
-        />
+        /> */}
         <ImageView
           maxWidth={window.innerWidth}
           maxHeight={window.innerHeight}
           imgUrl={imageView.files[imageView.index]}
-          isLast={imageView.index === imageView.files.length}
+          isLast={
+            imageView.files.length !== 0 &&
+            imageView.index === imageView.files.length
+          }
           onChangeImage={this.onChangeImage}
           onDropImage={this.onDropImage}
           onClick={this.onOpenDialog}
         />
-      </div>
+      </>
     );
   }
 
@@ -77,6 +80,11 @@ class App extends React.Component<ChildProps, State> {
       case "ArrowLeft":
         this.props.decrementIndex();
         break;
+
+      case "O":
+        if (event.ctrlKey) {
+          this.onOpenDialog();
+        }
     }
   };
 
@@ -89,8 +97,10 @@ class App extends React.Component<ChildProps, State> {
   };
 
   private onChangeImage = (width: number, height: number) => {
-    const w = window.screen.width > width ? width : window.screen.width;
-    const h = window.screen.height > height ? height : window.screen.height;
+    const w =
+      window.screen.availWidth > width ? width : window.screen.availWidth;
+    const h =
+      window.screen.availHeight > height ? height : window.screen.availHeight;
 
     this.props.windowSizeChange(w, h);
   };
