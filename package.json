@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "electron ./dist",
-    "build:watch": "webpack --watch --config ./webpack.config.js --mode development",
+    "watch": "webpack --watch --config ./webpack.config.js --mode development",
     "build": "webpack --config ./webpack.config.js --mode production"
   },
   "devDependencies": {
