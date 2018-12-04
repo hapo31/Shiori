@@ -7,23 +7,26 @@ import ImageView from "./ImageView/ImageView";
 import AppState from "../State/AppState";
 import Actions from "../Actions/Actions";
 import { FileEvent } from "../../events/File";
-import Header from "./Header/Header";
+import AppRegionArea from "./AppRegionArea/AppRegionArea";
 
 type State = {
   windowHeight: number;
   windowWidth: number;
+  isVisibleAppRegion: boolean;
 };
 
 type ChildProps = AppState & typeof Actions;
 class App extends React.Component<ChildProps, State> {
   state = {
     windowHeight: 0,
-    windowWidth: 0
+    windowWidth: 0,
+    isVisibleAppRegion: true
   };
 
   constructor(props: ChildProps) {
     super(props);
 
+    // openDialogRequest の結果を受信する
     ipcRenderer.on(FileEvent.openDialogResponse, (_: any, dirPath: string) => {
       props.requestFileEnumerate(dirPath);
     });
@@ -42,8 +45,8 @@ class App extends React.Component<ChildProps, State> {
       }
     );
 
-    window.onkeydown = this.onKeyDown;
-    window.onresize = this.onWindowResize;
+    window.onkeydown = this.onKeyDownWindow;
+    window.onresize = this.onResizeWindow;
   }
 
   render() {
@@ -51,28 +54,25 @@ class App extends React.Component<ChildProps, State> {
 
     return (
       <>
-        {/* <Header
-          title={imageView.files[imageView.index]}
-          onClickClose={this.onClickCloseApp}
-        /> */}
+        <AppRegionArea isVisible={this.state.isVisibleAppRegion} />
         <ImageView
           maxWidth={window.innerWidth}
           maxHeight={window.innerHeight}
           imgUrl={imageView.files[imageView.index]}
-          isLast={
-            imageView.files.length !== 0 &&
-            imageView.index === imageView.files.length
-          }
           onChangeImage={this.onChangeImage}
           onDropImage={this.onDropImage}
-          onClick={this.onOpenDialog}
+          onDoubleClick={this.openDialog}
         />
       </>
     );
   }
 
-  private onKeyDown = (event: KeyboardEvent) => {
+  /**
+   * アプリへのキー操作を拾う
+   */
+  private onKeyDownWindow = (event: KeyboardEvent) => {
     event.preventDefault();
+    console.log(event.key);
     switch (event.key) {
       case "ArrowRight":
         this.props.incrementIndex();
@@ -83,12 +83,15 @@ class App extends React.Component<ChildProps, State> {
 
       case "O":
         if (event.ctrlKey) {
-          this.onOpenDialog();
+          this.openDialog();
         }
     }
   };
 
-  private onOpenDialog = () => {
+  /**
+   * フォルダ選択ダイアログを開く
+   */
+  private openDialog = () => {
     this.props.openDialog({
       properties: ["openDirectory"],
       title: "画像フォルダを選択",
@@ -96,6 +99,9 @@ class App extends React.Component<ChildProps, State> {
     });
   };
 
+  /**
+   * 画像が切り替わったときにウインドウサイズを変える
+   */
   private onChangeImage = (width: number, height: number) => {
     const w =
       window.screen.availWidth > width ? width : window.screen.availWidth;
@@ -105,6 +111,9 @@ class App extends React.Component<ChildProps, State> {
     this.props.windowSizeChange(w, h);
   };
 
+  /**
+   * 画像またはフォルダがドロップされたときにその画像を含むディレクトリまたはディレクトリそのものを開く
+   */
   private onDropImage = (file: File, isDirectory: boolean) => {
     const dirName = isDirectory
       ? file.path
@@ -115,7 +124,10 @@ class App extends React.Component<ChildProps, State> {
     this.props.requestFileEnumerate(dirName);
   };
 
-  private onWindowResize = (_: UIEvent) => {
+  /**
+   * ウインドウがリサイズされたらステートを更新(なんのために？)
+   */
+  private onResizeWindow = (_: UIEvent) => {
     this.setState({
       windowWidth: window.innerWidth,
       windowHeight: window.innerHeight
