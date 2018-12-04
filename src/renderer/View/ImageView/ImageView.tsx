@@ -6,10 +6,9 @@ type Props = {
   maxWidth: number;
   maxHeight: number;
   imgUrl: string;
-  isLast: boolean;
   onChangeImage: (width: number, height: number) => void;
   onDropImage: (file: File, isDirectory: boolean) => void;
-  onClick: () => void;
+  onDoubleClick: () => void;
 };
 
 type State = {
@@ -19,6 +18,7 @@ type State = {
 
 const BorderContainer = styled.div`
   -webkit-user-drag: none;
+  user-select: none;
   text-align: center;
   font-size: 10px;
   height: 100%;
@@ -32,21 +32,11 @@ const BorderContainer = styled.div`
   }
 `;
 
-const LastScreen = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: black;
-`;
-
 export default class ImageView extends React.Component<Props, State> {
   state = {
     width: 0,
     height: 0
   };
-
-  componentDidUpdate() {
-    console.log(this.props);
-  }
 
   render() {
     return (
@@ -59,14 +49,12 @@ export default class ImageView extends React.Component<Props, State> {
           left: 0,
           top: 0
         }}
-        onClick={this.onClick}
+        onDoubleClick={this.onDoubleClick}
         onDragOver={this.onDragOver}
         onDrop={this.onDrop}
       >
         {(() => {
-          if (this.props.isLast) {
-            return <LastScreen />;
-          } else if (this.props.imgUrl == null) {
+          if (this.props.imgUrl == null) {
             return (
               <BorderContainer>
                 フォルダまたは画像をドラッグ＆ドロップ
@@ -104,8 +92,8 @@ export default class ImageView extends React.Component<Props, State> {
     }
   };
 
-  private onClick = () => {
-    this.props.onClick();
+  private onDoubleClick = () => {
+    this.props.onDoubleClick();
   };
 
   private onLoad = async (event: React.FormEvent<HTMLImageElement>) => {
