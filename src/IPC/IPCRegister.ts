@@ -1,8 +1,10 @@
 import { ipcMain, BrowserWindow, dialog, OpenDialogOptions } from "electron";
 import path from "path";
+import fs from "fs";
 import { FileEvent } from "../events/File";
 import ReadFiles from "../File/ReadFiles";
 import { WindowEvent } from "../events/Window";
+import AppState from "../renderer/State/AppState";
 
 /**
  * 渡されたディレクトリのパスに含まれている画像ファイルを列挙する
@@ -60,4 +62,45 @@ export function CloseApplicationWindow(window: BrowserWindow) {
   ipcMain.on(WindowEvent.closeApplication, (event: any) => {
     window.close();
   });
+}
+
+/**
+ * アプリケーションの state を json として保存する
+ */
+export function SaveApplicationState() {
+  ipcMain.on(
+    WindowEvent.saveApplicationState,
+    (event: any, state: AppState) => {
+      fs.writeFile(
+        "app.json",
+        JSON.stringify(state),
+        { encoding: "utf-8" },
+        () => {
+          /* NOP */
+        }
+      );
+    }
+  );
+}
+
+/**
+ * アプリケーションの state の json を読み込む
+ */
+export function LoadApplicationState() {
+  ipcMain.on(
+    WindowEvent.loadApplicationStateRequest,
+    (event: any, state: AppState) => {
+      fs.readFile("app.json", { encoding: "utf-8" }, (err, result) => {
+        if (result) {
+          const state = JSON.parse(result);
+          event.sender.send(WindowEvent.loadApplicationStateResponse, state);
+        } else {
+          event.sender.send(
+            WindowEvent.loadApplicationStateResponse,
+            undefined
+          );
+        }
+      });
+    }
+  );
 }

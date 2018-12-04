@@ -47,6 +47,7 @@ class App extends React.Component<ChildProps, State> {
 
     window.onkeydown = this.onKeyDownWindow;
     window.onresize = this.onResizeWindow;
+    window.onclose = this.onCloseApp;
   }
 
   render() {
@@ -72,7 +73,6 @@ class App extends React.Component<ChildProps, State> {
    */
   private onKeyDownWindow = (event: KeyboardEvent) => {
     event.preventDefault();
-    console.log(event.key);
     switch (event.key) {
       case "ArrowRight":
         this.props.incrementIndex();
@@ -81,7 +81,7 @@ class App extends React.Component<ChildProps, State> {
         this.props.decrementIndex();
         break;
 
-      case "O":
+      case "o":
         if (event.ctrlKey) {
           this.openDialog();
         }
@@ -134,7 +134,8 @@ class App extends React.Component<ChildProps, State> {
     });
   };
 
-  private onClickCloseApp = () => {
+  private onCloseApp = () => {
+    this.props.applicationStateSave();
     this.props.applicationClose();
   };
 }

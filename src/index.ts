@@ -43,6 +43,7 @@ class MyApp {
     IPCRegister.OpenDialog(this.mainWindow);
     IPCRegister.ChangeWindowSize(this.mainWindow);
     IPCRegister.CloseApplicationWindow(this.mainWindow);
+    IPCRegister.SaveApplicationState();
 
     this.mainWindow.on("closed", () => {
       this.mainWindow = null;

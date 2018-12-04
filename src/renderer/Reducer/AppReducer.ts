@@ -1,4 +1,3 @@
-import AppState from "../State/AppState";
 import { combineReducers } from "redux";
 import ImageViewReducer from "./ImageView/ImageViewReducer";
 import WindowReducer from "./Window/WindowReducer";
