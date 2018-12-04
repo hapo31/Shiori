@@ -25,7 +25,7 @@ export default function ImageViewReducer(
     case ImageViewActionType.INCREMENT_INDEX: {
       // index + 1 が length 以上ならインクリメントしない
       const nextIndex =
-        state.index + 1 > state.files.length ? state.index : state.index + 1;
+        state.index + 1 >= state.files.length ? state.index : state.index + 1;
       return {
         ...state,
         index: nextIndex
