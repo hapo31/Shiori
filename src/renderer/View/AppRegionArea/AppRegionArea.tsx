@@ -9,23 +9,53 @@ const AppRegionTip = styled.div`
   position: fixed;
   background-color: #ccc;
   -webkit-app-region: drag;
-  height: 50px;
-  width: 50px;
 `;
+
+const frameSpace = "3px";
+const defaultHeight = "20px";
+const defaultWidth = "20px";
 
 export default class AppRegionArea extends React.PureComponent<Props> {
   render() {
     if (this.props.isVisible) {
       return (
         <>
-          {/* 左上 */}
-          <AppRegionTip style={{ top: "5px", left: "5px" }} />
-          {/* 右上 */}
-          <AppRegionTip style={{ top: "5px", right: "5px" }} />
-          {/* 左下 */}
-          <AppRegionTip style={{ left: "5px", bottom: "5px" }} />
-          {/* 右下 */}
-          <AppRegionTip style={{ right: "5px", bottom: "5px" }} />
+          {/* 上 */}
+          <AppRegionTip
+            style={{
+              left: frameSpace,
+              top: frameSpace,
+              width: "calc(100% - 6px)",
+              height: defaultHeight
+            }}
+          />
+          {/* 左 */}
+          <AppRegionTip
+            style={{
+              left: frameSpace,
+              top: frameSpace,
+              width: defaultWidth,
+              height: "calc(100% - 6px)"
+            }}
+          />
+          {/* 右 */}
+          <AppRegionTip
+            style={{
+              right: frameSpace,
+              top: frameSpace,
+              width: defaultWidth,
+              height: "calc(100% - 6px)"
+            }}
+          />
+          {/* 下 */}
+          <AppRegionTip
+            style={{
+              left: frameSpace,
+              bottom: frameSpace,
+              width: "calc(100% - 6px)",
+              height: defaultHeight
+            }}
+          />
         </>
       );
     }
