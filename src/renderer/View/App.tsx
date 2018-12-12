@@ -103,10 +103,10 @@ class App extends React.Component<ChildProps, State> {
    * 画像が切り替わったときにウインドウサイズを変える
    */
   private onChangeImage = (width: number, height: number) => {
-    const w =
-      window.screen.availWidth > width ? width : window.screen.availWidth;
-    const h =
-      window.screen.availHeight > height ? height : window.screen.availHeight;
+    const maxWidth = window.screen.availWidth - window.screenLeft;
+    const maxHeight = window.screen.availHeight - window.screenTop;
+    const w = maxWidth > width ? width : maxWidth;
+    const h = maxHeight > height ? height : maxHeight;
 
     this.props.windowSizeChange(w, h);
   };
