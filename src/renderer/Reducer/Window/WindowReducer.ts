@@ -18,6 +18,11 @@ export default function WindowReducer(state = {}, action: WindowAction) {
       return state;
     }
 
+    case WindowActionType.DEVTOOL_OPEN: {
+      ipcRenderer.send(WindowEvent.openDevtool);
+      return state;
+    }
+
     default:
       return state;
   }

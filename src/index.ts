@@ -34,8 +34,6 @@ class MyApp {
 
     this.mainWindow.loadURL(this.mainURL);
 
-    this.mainWindow.webContents.openDevTools();
-
     const menu = Menu.buildFromTemplate([]);
     Menu.setApplicationMenu(menu);
 
@@ -44,6 +42,7 @@ class MyApp {
     IPCRegister.ChangeWindowSize(this.mainWindow);
     IPCRegister.CloseApplicationWindow(this.mainWindow);
     IPCRegister.SaveApplicationState();
+    IPCRegister.OpenDevtool(this.mainWindow);
 
     this.mainWindow.on("closed", () => {
       this.mainWindow = null;

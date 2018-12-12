@@ -104,3 +104,11 @@ export function LoadApplicationState() {
     }
   );
 }
+
+export function OpenDevtool(window: BrowserWindow) {
+  ipcMain.on(WindowEvent.openDevtool, (_: any) => {
+    if (!window.isDestroyed()) {
+      window.webContents.openDevTools();
+    }
+  });
+}

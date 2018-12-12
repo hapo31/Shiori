@@ -3,5 +3,6 @@ export enum WindowEvent {
   changeWindowSizeRequest = "changeWindowSizeRequest",
   saveApplicationState = "saveApplicationState",
   loadApplicationStateRequest = "loadApplicationStateRequest",
-  loadApplicationStateResponse = "loadApplicationStateResponse"
+  loadApplicationStateResponse = "loadApplicationStateResponse",
+  openDevtool = "openDevtool"
 }

@@ -85,6 +85,12 @@ class App extends React.Component<ChildProps, State> {
         if (event.ctrlKey) {
           this.openDialog();
         }
+
+      case "I":
+        // Ctrl + Shift + I
+        if (event.ctrlKey || event.metaKey) {
+          this.props.devtoolOpen();
+        }
     }
   };
 
