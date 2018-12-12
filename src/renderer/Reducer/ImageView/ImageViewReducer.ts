@@ -23,17 +23,18 @@ export default function ImageViewReducer(
       };
     }
     case ImageViewActionType.INCREMENT_INDEX: {
-      // index + 1 が length 以上ならインクリメントしない
+      // index + 1 が length 以上なら0に戻す
       const nextIndex =
-        state.index + 1 >= state.files.length ? state.index : state.index + 1;
+        state.index + 1 >= state.files.length ? 0 : state.index + 1;
       return {
         ...state,
         index: nextIndex
       };
     }
     case ImageViewActionType.DECREMENT_INDEX: {
-      // index - 1 が 0未満ならデクリメントしない
-      const nextIndex = state.index - 1 < 0 ? 0 : state.index - 1;
+      // index - 1 が 0未満なら末尾にする
+      const nextIndex =
+        state.index - 1 < 0 ? state.files.length - 1 : state.index - 1;
       return {
         ...state,
         index: nextIndex
