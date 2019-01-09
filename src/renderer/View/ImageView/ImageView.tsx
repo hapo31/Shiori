@@ -16,6 +16,15 @@ type State = {
   width: number;
 };
 
+const Outer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: table;
+  position: fixed;
+  left: 0;
+  top: 0;
+`;
+
 const BorderContainer = styled.div`
   -webkit-user-drag: none;
   user-select: none;
@@ -26,6 +35,7 @@ const BorderContainer = styled.div`
   border: solid #ddd;
   border-radius: 20px;
   vertical-align: middle;
+  display: table-cell;
 
   &:hover {
     background-color: #ccc;
@@ -40,15 +50,7 @@ export default class ImageView extends React.Component<Props, State> {
 
   render() {
     return (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          position: "fixed",
-          left: 0,
-          top: 0
-        }}
+      <Outer
         onDoubleClick={this.onDoubleClick}
         onDragOver={this.onDragOver}
         onDrop={this.onDrop}
@@ -72,7 +74,7 @@ export default class ImageView extends React.Component<Props, State> {
             );
           }
         })()}
-      </div>
+      </Outer>
     );
   }
 
