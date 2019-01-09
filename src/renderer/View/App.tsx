@@ -27,12 +27,16 @@ class App extends React.Component<ChildProps, State> {
     super(props);
 
     // openDialogRequest の結果を受信する
-    ipcRenderer.on(FileEvent.openDialogResponse, (_: any, dirPath: string) => {
-      props.requestFileEnumerate(dirPath);
-    });
+    ipcRenderer.on(
+      FileEvent.openDialogResponse,
+      (_: Electron.Event, dirPath: string) => {
+        props.requestFileEnumerate(dirPath);
+      }
+    );
+    // fileEnumrateResponse の結果を受信する
     ipcRenderer.on(
       FileEvent.fileEnumrateResponse,
-      (_: any, paths: string[]) => {
+      (_: Electron.Event, paths: string[]) => {
         props.changeFiles(
           paths.filter(
             file =>
@@ -48,6 +52,10 @@ class App extends React.Component<ChildProps, State> {
     window.onkeydown = this.onKeyDownWindow;
     window.onresize = this.onResizeWindow;
     window.onclose = this.onCloseApp;
+  }
+
+  componentDidMount() {
+    this.props.applicationStateLoad();
   }
 
   render() {

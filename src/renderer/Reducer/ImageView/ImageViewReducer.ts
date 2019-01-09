@@ -3,6 +3,8 @@ import {
   ImageViewActionType,
   ImageViewAction
 } from "../../Actions/ImageView/ImageViewAction";
+import { ipcRenderer } from "electron";
+import { WindowEvent } from "../../../events/Window";
 
 const initialState = {
   files: [],
@@ -39,6 +41,22 @@ export default function ImageViewReducer(
         ...state,
         index: nextIndex
       };
+    }
+
+    case ImageViewActionType.SAVE_STATE: {
+      ipcRenderer.send(WindowEvent.saveApplicationState, state);
+      return state;
+    }
+
+    case ImageViewActionType.LOAD_STATE: {
+      const stateValue: ImageViewState = ipcRenderer.sendSync(
+        WindowEvent.loadApplicationStateRequest
+      );
+      if (stateValue) {
+        return stateValue;
+      } else {
+        return state;
+      }
     }
     default:
       return state;

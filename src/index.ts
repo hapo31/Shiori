@@ -41,6 +41,7 @@ class MyApp {
     IPCRegister.OpenDialog(this.mainWindow);
     IPCRegister.ChangeWindowSize(this.mainWindow);
     IPCRegister.CloseApplicationWindow(this.mainWindow);
+    IPCRegister.LoadApplicationState();
     IPCRegister.SaveApplicationState();
     IPCRegister.OpenDevtool(this.mainWindow);
 

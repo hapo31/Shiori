@@ -13,7 +13,7 @@ import AppState from "../renderer/State/AppState";
 export function EnumerateImageFile(window: BrowserWindow) {
   ipcMain.on(
     FileEvent.fileEnumrateRequest,
-    async (event: any, dirpath: string) => {
+    async (event: Electron.Event, dirpath: string) => {
       const fileNames = await ReadFiles(dirpath);
       event.sender.send(
         FileEvent.fileEnumrateResponse,
@@ -30,7 +30,7 @@ export function EnumerateImageFile(window: BrowserWindow) {
 export function OpenDialog(window: BrowserWindow) {
   ipcMain.on(
     FileEvent.openDialogRequest,
-    (event: any, options: OpenDialogOptions) => {
+    (event: Electron.Event, options: OpenDialogOptions) => {
       dialog.showOpenDialog(window, options, filePaths => {
         if (filePaths && filePaths.length > 0) {
           event.sender.send(FileEvent.openDialogResponse, filePaths[0]);
@@ -47,7 +47,7 @@ export function OpenDialog(window: BrowserWindow) {
 export function ChangeWindowSize(window: BrowserWindow) {
   ipcMain.on(
     WindowEvent.changeWindowSizeRequest,
-    (event: any, width: number, height: number) => {
+    (_: Electron.Event, width: number, height: number) => {
       const bounds = window.getBounds();
       window.setBounds({ width, height, x: bounds.x, y: bounds.y });
     }
@@ -59,7 +59,7 @@ export function ChangeWindowSize(window: BrowserWindow) {
  * @param window
  */
 export function CloseApplicationWindow(window: BrowserWindow) {
-  ipcMain.on(WindowEvent.closeApplication, (event: any) => {
+  ipcMain.on(WindowEvent.closeApplication, (_: Electron.Event) => {
     window.close();
   });
 }
@@ -70,7 +70,8 @@ export function CloseApplicationWindow(window: BrowserWindow) {
 export function SaveApplicationState() {
   ipcMain.on(
     WindowEvent.saveApplicationState,
-    (event: any, state: AppState) => {
+    (_: Electron.Event, state: AppState) => {
+      console.log(state);
       fs.writeFile(
         "app.json",
         JSON.stringify(state),
@@ -89,24 +90,16 @@ export function SaveApplicationState() {
 export function LoadApplicationState() {
   ipcMain.on(
     WindowEvent.loadApplicationStateRequest,
-    (event: any, state: AppState) => {
+    (event: Electron.Event, state: AppState) => {
       fs.readFile("app.json", { encoding: "utf-8" }, (err, result) => {
-        if (result) {
-          const state = JSON.parse(result);
-          event.sender.send(WindowEvent.loadApplicationStateResponse, state);
-        } else {
-          event.sender.send(
-            WindowEvent.loadApplicationStateResponse,
-            undefined
-          );
-        }
+        event.returnValue = result ? JSON.parse(result) : undefined;
       });
     }
   );
 }
 
 export function OpenDevtool(window: BrowserWindow) {
-  ipcMain.on(WindowEvent.openDevtool, (_: any) => {
+  ipcMain.on(WindowEvent.openDevtool, (_: Electron.Event) => {
     if (!window.isDestroyed()) {
       window.webContents.openDevTools();
     }
