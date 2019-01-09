@@ -7,7 +7,6 @@ type Props = {
 
 const AppRegionTip = styled.div`
   position: fixed;
-  background-color: #ccc;
   -webkit-app-region: drag;
 `;
 
