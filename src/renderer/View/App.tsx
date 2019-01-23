@@ -63,7 +63,11 @@ class App extends React.Component<ChildProps, State> {
 
     return (
       <>
-        <AppRegionArea isVisible={this.state.isVisibleAppRegion} />
+        <AppRegionArea
+          isVisible={this.state.isVisibleAppRegion}
+          isVisibleBorder={imageView.files.length === 0}
+          borderPixelSize={15}
+        />
         <ImageView
           maxWidth={window.innerWidth}
           maxHeight={window.innerHeight}

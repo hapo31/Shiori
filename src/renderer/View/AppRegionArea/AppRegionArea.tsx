@@ -1,18 +1,20 @@
-import React, { CSSProperties } from "react";
+import React from "react";
 import styled from "styled-components";
 
 type Props = {
   isVisible: boolean;
+  borderPixelSize: number;
+  isVisibleBorder: boolean;
 };
 
 const AppRegionTip = styled.div`
   position: fixed;
+  background-color: ${(props: { isVisibleBorder: boolean }) =>
+    props.isVisibleBorder ? "#ddd" : "#fff"};
   -webkit-app-region: drag;
 `;
 
-const frameSpace = "3px";
-const defaultHeight = "20px";
-const defaultWidth = "20px";
+const framePosition = "3px";
 
 export default class AppRegionArea extends React.PureComponent<Props> {
   render() {
@@ -21,38 +23,42 @@ export default class AppRegionArea extends React.PureComponent<Props> {
         <>
           {/* 上 */}
           <AppRegionTip
+            isVisibleBorder={this.props.isVisibleBorder}
             style={{
-              left: frameSpace,
-              top: frameSpace,
+              left: framePosition,
+              top: framePosition,
               width: "calc(100% - 6px)",
-              height: defaultHeight
+              height: `${this.props.borderPixelSize}px`
             }}
           />
           {/* 左 */}
           <AppRegionTip
+            isVisibleBorder={this.props.isVisibleBorder}
             style={{
-              left: frameSpace,
-              top: frameSpace,
-              width: defaultWidth,
+              left: framePosition,
+              top: framePosition,
+              width: `${this.props.borderPixelSize}px`,
               height: "calc(100% - 6px)"
             }}
           />
           {/* 右 */}
           <AppRegionTip
+            isVisibleBorder={this.props.isVisibleBorder}
             style={{
-              right: frameSpace,
-              top: frameSpace,
-              width: defaultWidth,
+              right: framePosition,
+              top: framePosition,
+              width: `${this.props.borderPixelSize}px`,
               height: "calc(100% - 6px)"
             }}
           />
           {/* 下 */}
           <AppRegionTip
+            isVisibleBorder={this.props.isVisibleBorder}
             style={{
-              left: frameSpace,
-              bottom: frameSpace,
+              left: framePosition,
+              bottom: framePosition,
               width: "calc(100% - 6px)",
-              height: defaultHeight
+              height: `${this.props.borderPixelSize}px`
             }}
           />
         </>
