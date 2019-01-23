@@ -25,15 +25,13 @@ const Outer = styled.div`
   top: 0;
 `;
 
-const BorderContainer = styled.div`
+const MessageContainer = styled.div`
   -webkit-user-drag: none;
   user-select: none;
   text-align: center;
   font-size: 10px;
   height: 100%;
   width: 100%;
-  border: solid #ddd;
-  border-radius: 20px;
   vertical-align: middle;
   display: table-cell;
 
@@ -58,9 +56,9 @@ export default class ImageView extends React.Component<Props, State> {
         {(() => {
           if (this.props.imgUrl == null) {
             return (
-              <BorderContainer>
+              <MessageContainer>
                 フォルダまたは画像をドラッグ＆ドロップ
-              </BorderContainer>
+              </MessageContainer>
             );
           } else {
             return (
