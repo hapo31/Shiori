@@ -1,12 +1,12 @@
 {
-  "name": "Shiori",
+  "name": "shiori",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "index.js",
   "license": "MIT",
   "scripts": {
     "start": "electron ./dist",
     "watch": "webpack --watch --config ./webpack.config.js --mode development",
-    "build": "webpack --config ./webpack.config.js --mode production && electron-packager ./dist shiori --platform=win32 --arch=x64 --electron-version=3.0.10"
+    "build:win": "webpack --config ./webpack.config.js --mode production && copy package.json dist\\ && electron-packager ./dist shiori --platform=win32 --arch=x64 --electron-version=3.0.10"
   },
   "devDependencies": {
     "@types/react": "^16.7.7",
