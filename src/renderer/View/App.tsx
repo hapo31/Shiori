@@ -67,15 +67,16 @@ class App extends React.Component<ChildProps, State> {
           isVisible={this.state.isVisibleAppRegion}
           isVisibleBorder={imageView.files.length === 0}
           borderPixelSize={15}
-        />
-        <ImageView
-          maxWidth={window.innerWidth}
-          maxHeight={window.innerHeight}
-          imgUrl={imageView.files[imageView.index]}
-          onChangeImage={this.onChangeImage}
-          onDropImage={this.onDropImage}
-          onDoubleClick={this.openDialog}
-        />
+        >
+          <ImageView
+            maxWidth={this.state.windowWidth}
+            maxHeight={this.state.windowHeight}
+            imgUrl={imageView.files[imageView.index]}
+            onChangeImage={this.onChangeImage}
+            onDropImage={this.onDropImage}
+            onDoubleClick={this.openDialog}
+          />
+        </AppRegionArea>
       </>
     );
   }
@@ -143,7 +144,7 @@ class App extends React.Component<ChildProps, State> {
   };
 
   /**
-   * ウインドウがリサイズされたらステートを更新(なんのために？)
+   * ウインドウがリサイズされたらステートのウインドウサイズを更新
    */
   private onResizeWindow = (_: UIEvent) => {
     this.setState({
