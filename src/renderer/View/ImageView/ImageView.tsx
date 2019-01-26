@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
 import styled from "styled-components";
-import FitImage from "../StyledComponent/FitImage";
+import AutoResizeImage from "../StyledComponent/AutoResizeImage";
 
 type Props = {
   maxWidth: number;
@@ -11,12 +11,7 @@ type Props = {
   onDoubleClick: () => void;
 };
 
-type State = {
-  height: number;
-  width: number;
-};
-
-const Outer = styled.div`
+const ImageViewContainer = styled.div`
   width: 100%;
   height: 100%;
   display: table;
@@ -40,15 +35,10 @@ const MessageContainer = styled.div`
   }
 `;
 
-export default class ImageView extends React.Component<Props, State> {
-  state = {
-    width: 0,
-    height: 0
-  };
-
+export default class ImageView extends React.Component<Props> {
   render() {
     return (
-      <Outer
+      <ImageViewContainer
         onDoubleClick={this.onDoubleClick}
         onDragOver={this.onDragOver}
         onDrop={this.onDrop}
@@ -62,7 +52,7 @@ export default class ImageView extends React.Component<Props, State> {
             );
           } else {
             return (
-              <FitImage
+              <AutoResizeImage
                 maxWidth={this.props.maxWidth}
                 maxHeight={this.props.maxHeight}
                 onLoad={this.onLoad}
@@ -72,7 +62,7 @@ export default class ImageView extends React.Component<Props, State> {
             );
           }
         })()}
-      </Outer>
+      </ImageViewContainer>
     );
   }
 
