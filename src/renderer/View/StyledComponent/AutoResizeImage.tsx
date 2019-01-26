@@ -5,10 +5,11 @@ type Props = {
   maxHeight: number;
 };
 
-const FitImage = styled.img`
+const AutoResizeImage = styled.img`
   display: block;
-  object-fit: cover;
-  width: 100%;
+  object-fit: contain;
+  background-color: black;
+  width: calc(100% + 1px);
   height: 100%;
   max-width: ${(props: Props) => props.maxWidth}px;
   max-height: ${(props: Props) => props.maxHeight}px;
@@ -16,4 +17,4 @@ const FitImage = styled.img`
   user-select: none;
 `;
 
-export default FitImage;
+export default AutoResizeImage;
